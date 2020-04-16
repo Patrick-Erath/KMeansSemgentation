@@ -10,17 +10,15 @@
 
 #define MAX_CLUSTERS 16
 
-#define MAX_ITERATIONS 100
+#define MAX_ITERATIONS 200
 
 #define BIG_double (INFINITY)
 
-/*
 void fail(char *str)
   {
     printf(str);
     exit(-1);
   }
-*/
   
 double calc_distance(int dim, double *p1, double *p2)
   {
@@ -122,8 +120,7 @@ void calc_cluster_centroids(int dim, int n, int k, double *X, int *cluster_assig
     for (int ii = 0; ii < k; ii++) 
       {
         if (cluster_member_count[ii] == 0)
-          //printf("WARNING: Empty cluster %d! \n", ii);
-          printf("WARNING");
+          printf("WARNING: Empty cluster %d! \n", ii);
           
        // for each dimension
         for (int jj = 0; jj < dim; jj++)
@@ -175,8 +172,7 @@ void  perform_move(int dim, int n, int k, double *X, int *cluster_assignment, do
     cluster_member_count[cluster_new]++;
     
     if (cluster_member_count[cluster_old] <= 1)
-      //("WARNING: Can't handle single-member clusters! \n");
-      printf("WARNING");
+      printf("WARNING: Can't handle single-member clusters! \n");
     
    // update centroid array
     for (int ii = 0; ii < dim; ii++)
@@ -194,13 +190,13 @@ void cluster_diag(int dim, int n, int k, double *X, int *cluster_assignment_inde
      
     printf("  Final clusters \n");
     for (int ii = 0; ii < k; ii++) 
-      printf("clusters");
-      //printf("    cluster %d:     members: %8d, centroid (%.1f %.1f) \n", ii, cluster_member_count[ii], cluster_centroid[ii*dim + 0], cluster_centroid[ii*dim + 1]);
+      printf("    cluster %d:     members: %8d, centroid (%.1f) \n", ii, cluster_member_count[ii], cluster_centroid[ii*dim + 0]);
   }
 
 void copy_assignment_array(int n, int *src, int *tgt)
   {
-    for (int ii = 0; ii < n; ii++)
+	int ii=0;
+    for (ii = 0; ii < n; ii++)
       tgt[ii] = src[ii];
   }
   
@@ -215,32 +211,34 @@ int assignment_change_count(int n, int a[], int b[])
     return change_count;
   }
 
-void kmeans(
+int*  kmeans(
             int  dim,		                     // dimension of data 
 
             double *X,                        // pointer to data
             int   n,                         // number of elements
             
             int   k,                         // number of clusters
-            double *cluster_centroid,         // initial cluster centroids
-            int   *cluster_assignment_final  // output
+            double *cluster_centroid        // initial cluster centroids
+              // output
            )
   {
     double *dist                    = (double *)malloc(sizeof(double) * n * k);
     int   *cluster_assignment_cur  = (int *)malloc(sizeof(int) * n);
     int   *cluster_assignment_prev = (int *)malloc(sizeof(int) * n);
     double *point_move_score        = (double *)malloc(sizeof(double) * n * k);
+	
     
-    /*
+    
     if (!dist || !cluster_assignment_cur || !cluster_assignment_prev || !point_move_score)
       fail("Error allocating dist arrays");
-      */
     
-
    // initial setup  
     calc_all_distances(dim, n, k, X, cluster_centroid, dist);
+	printf("\n Calculate Distances done \n");
     choose_all_clusters_from_distances(dim, n, k, dist, cluster_assignment_cur);
+	printf("\n choose_all_clusters_from_distances done \n");
     copy_assignment_array(n, cluster_assignment_cur, cluster_assignment_prev);
+	printf("\n copy_assignment_array done \n");
 
    // BATCH UPDATE
     double prev_totD = BIG_double;
@@ -282,13 +280,13 @@ void kmeans(
          
          int change_count = assignment_change_count(n, cluster_assignment_cur, cluster_assignment_prev);
          
-         //printf("%3d   %u   %9d  %16.2f %17.2f\n", batch_iteration, 1, change_count, totD, totD - prev_totD);
+         printf("%3d   %u   %9d  %16.2f %17.2f\n", batch_iteration, 1, change_count, totD, totD - prev_totD);
          fflush(stdout);
          
         // done with this phase if nothing has changed
          if (change_count == 0)
            {
-             //printf("  no change made on this step - iteration completed \n");
+             printf("  no change made on this step - iteration completed \n");
              break;
            }
 
@@ -300,8 +298,8 @@ void kmeans(
 cluster_diag(dim, n, k, X, cluster_assignment_cur, cluster_centroid);
 
 
-/* THe online update prtion of this code has never worked properly, but batch update has been adequate for our projects so far
    // ONLINE UPDATE
+/* The online update prtion of this code has never worked properly, but batch update has been adequate for our projects so far.
     int online_iteration = 0;
     int last_point_moved = 0;
     
@@ -400,12 +398,21 @@ cluster_diag(dim, n, k, X, cluster_assignment_cur, cluster_centroid);
 //    printf("iterations: %3d %3d \n", batch_iteration, online_iteration);
       
    // write to output array
-    copy_assignment_array(n, cluster_assignment_cur, cluster_assignment_final);    
+  // cluster_assignment_final = cluster_assignment_cur;
+   // copy_assignment_array(n, cluster_assignment_cur, cluster_assignment_final); 
+
+// 	void copy_assignment_array(int n, int *src, int *tgt)
+//   {
+//     for (int ii = 0; ii < n; ii++)
+//       tgt[ii] = src[ii];
+//   }   
     
     free(dist);
-    free(cluster_assignment_cur);
+    //free(cluster_assignment_cur);
     free(cluster_assignment_prev);
     free(point_move_score);
+
+	return cluster_assignment_cur;
   }           
            
 

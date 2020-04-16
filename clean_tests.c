@@ -101,11 +101,7 @@ int k_means() {
      printf("0 Counts %d\n", counter[0]);  
      printf("1 Counts %d\n", counter[1]);  
 
-    
-
-
     return 0;
-
 }
 
 int main(int argc, char*argv[]) {
