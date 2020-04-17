@@ -1,0 +1,4 @@
+.ipynb_checkpoints
+.vscode
+./clean_tests.dSYM/Contents
+.DS_Store
