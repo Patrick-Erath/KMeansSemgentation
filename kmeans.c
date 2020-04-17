@@ -1,3 +1,7 @@
+// kmeans.c
+// Ethan Brodsky
+// October 2011
+
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>

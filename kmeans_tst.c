@@ -80,13 +80,25 @@ int main(int nargs, char **args)
 	printf("%d", cluster_final[540000]);
 	printf("%d", cluster_final[545000]);
 	printf("%d", cluster_final[size-1]);
+	// printf("%d", sizeof(cluster_final[size-1]));
+
 
 	
-
+/**
+ * write will write the binary representation of the int, 
+ * e.g. 8 bytes forming the 64 bits of an integral value, directly to the file. 
+ * There is no conversion into ASCII or UTF8 "characters" as you'd expect when opening the file with a text editor. 
+ * The integral value 2 in binary is 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x02,
+ * and that's what you "see" in your file. A textual representation would be 0x32, i.e. the ASCII value of digit 2.
+ * */
 	FILE *f = fopen("data.txt", "w+");
-	fwrite(&cluster_final, size, sizeof(int), f);
-	fclose(f);
-	
+	// On success
+	if (f) {
+        for(i=0; i<size; i++){
+			 fprintf(f, "%d\n", cluster_final[i]);
+		}
+        fclose(f);
+    }
 
 	free(centers);
 
