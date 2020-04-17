@@ -3,7 +3,10 @@
 To run :
 
 1. Git clone repo
-<sh>git clone https://github.com/Patrick-Erath/KMeansSemgentation.git</sh>
+```console
+git clone https://github.com/Patrick-Erath/KMeansSemgentation.git
+```
+
 
 2. Cd into folder, and build project
 <sh>gpp kmeans_tst.c</sh>
