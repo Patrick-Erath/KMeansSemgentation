@@ -1,7 +1,3 @@
-// kmeans.h
-// Ethan Brodsky
-// October 2011
-
 extern int* kmeans(
             int  dim,		                     // dimension of data 
 
