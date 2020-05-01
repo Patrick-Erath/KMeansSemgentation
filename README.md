@@ -1,27 +1,26 @@
 # KMeansSemgentation
 
-To run :
+The goal of this project is to segment an image using K-means. In order to run the code, please follow the following steps in your terminal:
 
-1. Git clone repo
+<h1>Preface</h1>
+
+
+<h1>Instructions for Running</h1>
+1. CD into the project path, and build the project:
 ```console
-git clone https://github.com/Patrick-Erath/KMeansSemgentation.git
+cd /KMeansSegmentation
+gpp main.c
 ```
 
-
-2. Cd into folder, and build project
-```console
-gpp kmeans_tst.c
-```
-
-3. Run k-means on the image
+2. Run k-means on the image
 ```console
 ./a.out
 ```
-This runs k-means on the image "segment.jpg", and saves the segmented image as "data.txt". To view the segmented image we use the jupyernotebook, and compare to the built-in k-means function of sklearn to test accuracy.
+This runs k-means on the image "image.jpeg", and saves the segmented image as "data.txt". To view the segmented image we use the jupyernotebook, and compare to the built-in k-means function of sklearn to test accuracy.
 
-4. Compare C-code to Python
+3. Compare C-code to Python
 Start the jupyter-noteboot: 
 ```console
 jupyternotebook
 ```
-Open image-segmentation to view the image segmented by C-code
+Open image-segmentation.ipynb to view the image segmented by C-code
