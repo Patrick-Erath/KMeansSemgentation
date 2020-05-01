@@ -26,7 +26,7 @@ For <b>WINDOWS OS</b>:
 ```console
 ./a.exe
 ``` 
-
+\
 FOR <b>MAC OS</b>:
 ```console
 ./a.out
