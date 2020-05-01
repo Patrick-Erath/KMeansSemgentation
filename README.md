@@ -21,7 +21,7 @@ cd KMeansSegmentation
 gpp main.c
 ```
 
-2. Run k-means on the image__
+2. Run k-means on the image \
 For <b>WINDOWS OS</b>:
 ```console
 ./a.exe
