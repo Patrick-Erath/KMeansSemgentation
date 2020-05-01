@@ -279,8 +279,7 @@ int*  kmeans(
              break;
            }
 
-         prev_totD = totD;
-                        
+         prev_totD = totD;               
          batch_iteration++;
       }
 
@@ -291,6 +290,3 @@ cluster_diag(dim, n, k, X, cluster_assignment_cur, cluster_centroid);
 
 	return cluster_assignment_cur;
   }           
-           
-
-

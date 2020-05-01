@@ -8,7 +8,7 @@
 
 int WIDTH_GL;
 int HEIGHT_GL;
-double x[615440];
+double x[615440]; 
 double *centers;
 int   *cluster_final;
 
