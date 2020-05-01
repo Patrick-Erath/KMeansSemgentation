@@ -6,6 +6,8 @@
 #include <math.h>
 #include <time.h>
 
+// NUMBER OF CLUSTERS -- USER CHANGABLE
+int k_clusters = 2;
 int WIDTH_GL;
 int HEIGHT_GL;
 double x[615440]; 
@@ -58,7 +60,6 @@ int main(int nargs, char **args)
 	printf("\n");
 
 	// Randomly init k-cluster centers
-	int k_clusters = 2;
 	int i;
 	srand(time(NULL)); 
 	centers = calloc(k_clusters, sizeof(img_pointer));

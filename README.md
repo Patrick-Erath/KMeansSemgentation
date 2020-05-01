@@ -19,6 +19,11 @@ gpp main.c
 ```
 
 2. Run k-means on the image
+For WINDOWS OS
+```console
+./a.exe
+```
+FOR MAC OS:
 ```console
 ./a.out
 ```
