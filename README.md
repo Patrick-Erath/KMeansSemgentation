@@ -24,7 +24,7 @@ gpp main.c
 2. Run k-means on the image
 ```console
 ./a.exe     // For Windows OS
-./a.outt    //  For Apple OS
+./a.out     //  For Apple OS
 ``` 
 
 
