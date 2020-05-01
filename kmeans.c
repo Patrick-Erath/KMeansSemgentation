@@ -233,7 +233,7 @@ int*  kmeans(
     
    // Initialization
   calculate_all_euclidean_distancess(dim, n, k, X, cluster_centroid, dist);
-	printf("\n 2. Calculated Eucilidan Done \n");
+	printf("\n 2. Calculated Eucilidan Done");
   choose_all_clusters_from_distances(dim, n, k, dist, cluster_assignment_cur);
 	printf("\n 3. Assigned Cluster Centers Done \n");
   copy_assignment_array(n, cluster_assignment_cur, cluster_assignment_prev);
