@@ -25,8 +25,10 @@ gpp main.c
 For <b>WINDOWS OS</b>:
 ```console
 ./a.exe
-```
+``` 
+
 <br/>
+
 FOR <b>MAC OS</b>:
 ```console
 ./a.out
