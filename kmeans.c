@@ -3,20 +3,14 @@
 #include <stdio.h>
 
 #define sqr(x) ((x)*(x))
-
+// The maximum number of clusters, this is for optimization 
 #define MAX_CLUSTERS 16
-
+// Maximum iterations, also for optimization, this limits long converegence time from over-fitting
 #define MAX_ITERATIONS 200
-
 #define BIG_double (INFINITY)
-
-void fail(char *str)
-  {
-    printf(str);
-    exit(-1);
-  }
   
-double calc_distance(int dim, double *p1, double *p2)
+// Calculate the Euclidean Distance between two points p1 and p2
+double calculate_euclidean_distance(int dim, double *p1, double *p2)
   {
     double distance_sq_sum = 0;
     
@@ -27,47 +21,50 @@ double calc_distance(int dim, double *p1, double *p2)
     
   }
 
-void calc_all_distances(int dim, int n, int k, double *X, double *centroid, double *distance_output)
+// Calculate ALL of the Eucilidean distances for a each point and each cluster
+void calculate_all_euclidean_distancess(int dim, int n, int k, double *X, double *cluster_center, double *distance_output)
   {
-    for (int ii = 0; ii < n; ii++) // for each point
-      for (int jj = 0; jj < k; jj++) // for each cluster
+    // Iterate over each point
+    for (int ii = 0; ii < n; ii++)
+    // Iterate over each cluster
+      for (int jj = 0; jj < k; jj++) 
         {
-         // calculate distance between point and cluster centroid
-          distance_output[ii*k + jj] = calc_distance(dim, &X[ii*dim], &centroid[jj*dim]);
+         // Calculate Eucilidean distance between point and cluster_center
+          distance_output[ii*k + jj] = calculate_euclidean_distance(dim, &X[ii*dim], &cluster_center[jj*dim]);
         }
   }
   
-double calc_total_distance(int dim, int n, int k, double *X, double *centroids, int *cluster_assignment_index)
- // NOTE: a point with cluster assignment -1 is ignored
+// Calculate the total distance between a point and it's respective cluster center
+double calculate_total_distance(int dim, int n, int k, double *X, double *centroids, int *cluster_assignment_index)
   {
     double tot_D = 0;
     
-   // for every point
+   // Iterate over each point
     for (int ii = 0; ii < n; ii++)
       {
-       // which cluster is it in?
+       // Get active cluster
         int active_cluster = cluster_assignment_index[ii];
-        
-       // sum distance
+       // Sum distance 
         if (active_cluster != -1)
-          tot_D += calc_distance(dim, &X[ii*dim], &centroids[active_cluster*dim]);
+          tot_D += calculate_euclidean_distance(dim, &X[ii*dim], &centroids[active_cluster*dim]);
       }
       
     return tot_D;
   }
 
+// Assign each point to a cluster group, based on the nearest o
 void choose_all_clusters_from_distances(int dim, int n, int k, double *distance_array, int *cluster_assignment_index)
   {
-   // for each point
+   // Iterate over each point
     for (int ii = 0; ii < n; ii++)
       {
         int best_index = -1;
         double closest_distance = BIG_double;
         
-       // for each cluster
+       // Iterate over each cluster
         for (int jj = 0; jj < k; jj++)
           {
-           // distance between point and cluster centroid
+           // Calculate distance between point and cluster cluster_center
            
             double cur_distance = distance_array[ii*k + jj];
             if (cur_distance < closest_distance)
@@ -76,8 +73,7 @@ void choose_all_clusters_from_distances(int dim, int n, int k, double *distance_
                 closest_distance = cur_distance;
               }
           }
-
-       // record in array
+       // Save the assigned cluster group 
         cluster_assignment_index[ii] = best_index;
       }
   }
@@ -86,7 +82,7 @@ void calc_cluster_centroids(int dim, int n, int k, double *X, int *cluster_assig
   {
     int cluster_member_count[MAX_CLUSTERS];
   
-   // initialize cluster centroid coordinate sums to zero
+   // Initialize cluster cluster_center coordinate sums to zero
     for (int ii = 0; ii < k; ii++) 
       {
         cluster_member_count[ii] = 0;
@@ -105,13 +101,13 @@ void calc_cluster_centroids(int dim, int n, int k, double *X, int *cluster_assig
        // update count of members in that cluster
         cluster_member_count[active_cluster]++;
         
-       // sum point coordinates for finding centroid
+       // sum point coordinates for finding cluster_center
         for (int jj = 0; jj < dim; jj++)
           new_cluster_centroid[active_cluster*dim + jj] += X[ii*dim + jj];
       }
       
       
-   // now divide each coordinate sum by number of members to find mean/centroid
+   // now divide each coordinate sum by number of members to find mean/cluster_center
    // for each cluster
     for (int ii = 0; ii < k; ii++) 
       {
@@ -160,17 +156,17 @@ void  perform_move(int dim, int n, int k, double *X, int *cluster_assignment, do
     int cluster_old = cluster_assignment[move_point];
     int cluster_new = move_target_cluster;
   
-   // update cluster assignment array
+   // Update cluster assignment array
     cluster_assignment[move_point] = cluster_new;
     
-   // update cluster count array
+   // Update cluster count array
     cluster_member_count[cluster_old]--;
     cluster_member_count[cluster_new]++;
     
     if (cluster_member_count[cluster_old] <= 1)
       printf("WARNING: Can't handle single-member clusters! \n");
     
-   // update centroid array
+   // Update cluster_center array
     for (int ii = 0; ii < dim; ii++)
       {
         cluster_centroid[cluster_old*dim + ii] -= (X[move_point*dim + ii] - cluster_centroid[cluster_old*dim + ii]) / cluster_member_count[cluster_old];
@@ -189,6 +185,7 @@ void cluster_diag(int dim, int n, int k, double *X, int *cluster_assignment_inde
       printf("    Cluster %d:     Count: %8d, \t Gray-Scale Value: (%.1f) \n", ii, cluster_member_count[ii], cluster_centroid[ii*dim + 0]);
   }
 
+// Copy array for data.txt output
 void copy_assignment_array(int n, int *src, int *tgt)
   {
 	int ii=0;
@@ -205,6 +202,12 @@ int assignment_change_count(int n, int a[], int b[])
         change_count++;
         
     return change_count;
+  }
+
+void fail(char *str)
+  {
+    printf(str);
+    exit(-1);
   }
 
 int*  kmeans(
@@ -226,60 +229,50 @@ int*  kmeans(
     
     
     if (!dist || !cluster_assignment_cur || !cluster_assignment_prev || !point_move_score)
-      fail("Error allocating dist arrays");
+      fail("Error Occured");
     
-   // initial setup  
-    calc_all_distances(dim, n, k, X, cluster_centroid, dist);
+   // Initialization
+  calculate_all_euclidean_distancess(dim, n, k, X, cluster_centroid, dist);
 	printf("\n 2. Calculated Eucilidan Done \n");
-    choose_all_clusters_from_distances(dim, n, k, dist, cluster_assignment_cur);
+  choose_all_clusters_from_distances(dim, n, k, dist, cluster_assignment_cur);
 	printf("\n 3. Assigned Cluster Centers Done \n");
-    copy_assignment_array(n, cluster_assignment_cur, cluster_assignment_prev);
+  copy_assignment_array(n, cluster_assignment_cur, cluster_assignment_prev);
 	printf("\n K-means Reached  \n");
 
-   // BATCH UPDATE
+   // Iterative k-means
     double prev_totD = BIG_double;
     int batch_iteration = 0;
     while (batch_iteration < MAX_ITERATIONS)
       {
-//        printf("batch iteration %d \n", batch_iteration);
-//        cluster_diag(dim, n, k, X, cluster_assignment_cur, cluster_centroid);
-        
-        // update cluster centroids
+        // Recalculate cluster centers
          calc_cluster_centroids(dim, n, k, X, cluster_assignment_cur, cluster_centroid);
 
-        // deal with empty clusters
-        // XXXXXXXXXXXXXX
 
-        // see if we've failed to improve
-         double totD = calc_total_distance(dim, n, k, X, cluster_centroid, cluster_assignment_cur);
+        // Check improvemens criteria
+         double totD = calculate_total_distance(dim, n, k, X, cluster_centroid, cluster_assignment_cur);
          if (totD > prev_totD)
-          // failed to improve - currently solution worse than previous
+          // Current solution worse than previous, 
            {
-            // restore old assignments
+            // Restore old assignments
              copy_assignment_array(n, cluster_assignment_prev, cluster_assignment_cur);
-             
-            // recalc centroids
+            // Recalculate centroids
              calc_cluster_centroids(dim, n, k, X, cluster_assignment_cur, cluster_centroid);
-             
              printf("  negative progress made on this step - iteration completed (%.2f) \n", totD - prev_totD);
-             
-            // done with this phase
              break;
            }
            
-        // save previous step
+        // Save step
          copy_assignment_array(n, cluster_assignment_cur, cluster_assignment_prev);
-         
-        // move all points to nearest cluster
-         calc_all_distances(dim, n, k, X, cluster_centroid, dist);
+        // Reassign all points to their respective closest cluster-center
+         calculate_all_euclidean_distancess(dim, n, k, X, cluster_centroid, dist);
          choose_all_clusters_from_distances(dim, n, k, dist, cluster_assignment_cur);
          
          int change_count = assignment_change_count(n, cluster_assignment_cur, cluster_assignment_prev);
          
          printf("%3d   %u   %9d  %16.2f %17.2f\n", batch_iteration, 1, change_count, totD, totD - prev_totD);
          fflush(stdout);
-         
-        // done with this phase if nothing has changed
+        
+        // If no change has occured, then convergence has been reached
          if (change_count == 0)
            {
              printf("\t Convergence Reached \n");
