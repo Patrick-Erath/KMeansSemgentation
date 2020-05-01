@@ -9,6 +9,9 @@ This project segements an image using k-means. A sample image is provided in the
 <p>
 To view the image after it has undergone segmentation, a python script in Jupyer notebook is used. The python script is also used to calculate algorithm efficiency, and compare the C-means algorithm with the python one for accuracy. The instructions to run the python script are explained below, however to simply view the test-case image being compared, a pdf file is also provided (open image-segmentation.pdf instead of opening jupyer notebook).
 </p>
+<p>
+Lastly, the code allows the user to change the number of k-cluster groups. To change the number of groups, simply change the 'k_clusters = 2' variable in main.c
+</p>
 
 <h1>Instructions for Running</h1>
 
