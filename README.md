@@ -35,4 +35,4 @@ Start the jupyter-noteboot:
 ```console
 jupyternotebook
 ```
-Open image-segmentation.ipynb to view the image segmented by C-code
+Open image-segmentation.ipynb to view the image segmented by C-code (or image-segmentation.pdf to view the test-case).
