@@ -21,17 +21,19 @@ cd KMeansSegmentation
 gpp main.c
 ```
 
-2. Run k-means on the image \
-\
+2. Run k-means on the image
+<li>
 For <b>WINDOWS OS</b>:
 ```console
 ./a.exe
 ``` 
-\
+</li>
+<li>
 For <b>MAC OS</b>:
 ```console
 ./a.out
 ```
+</li>
 This runs k-means on the image "image.jpeg", and saves the segmented image as "data.txt". To view the segmented image we use the jupyernotebook, and compare to the built-in k-means function to test accuracy.
 
 3. Compare C-code to Python
