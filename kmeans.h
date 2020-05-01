@@ -6,3 +6,4 @@ extern int* kmeans(
             double *cluster_centroid         // initial cluster centroids
           // output
            );
+          

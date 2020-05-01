@@ -184,9 +184,9 @@ void cluster_diag(int dim, int n, int k, double *X, int *cluster_assignment_inde
     
     get_cluster_member_count(n, k, cluster_assignment_index, cluster_member_count);
      
-    printf("  Final clusters \n");
+    printf("\t Final Clusters Centers: \n");
     for (int ii = 0; ii < k; ii++) 
-      printf("    cluster %d:     members: %8d, centroid (%.1f) \n", ii, cluster_member_count[ii], cluster_centroid[ii*dim + 0]);
+      printf("    Cluster %d:     Count: %8d, \t Gray-Scale Value: (%.1f) \n", ii, cluster_member_count[ii], cluster_centroid[ii*dim + 0]);
   }
 
 void copy_assignment_array(int n, int *src, int *tgt)
@@ -230,11 +230,11 @@ int*  kmeans(
     
    // initial setup  
     calc_all_distances(dim, n, k, X, cluster_centroid, dist);
-	printf("\n Calculate Distances done \n");
+	printf("\n 2. Calculated Eucilidan Done \n");
     choose_all_clusters_from_distances(dim, n, k, dist, cluster_assignment_cur);
-	printf("\n choose_all_clusters_from_distances done \n");
+	printf("\n 3. Assigned Cluster Centers Done \n");
     copy_assignment_array(n, cluster_assignment_cur, cluster_assignment_prev);
-	printf("\n copy_assignment_array done \n");
+	printf("\n K-means Reached  \n");
 
    // BATCH UPDATE
     double prev_totD = BIG_double;
@@ -282,7 +282,7 @@ int*  kmeans(
         // done with this phase if nothing has changed
          if (change_count == 0)
            {
-             printf("  no change made on this step - iteration completed \n");
+             printf("\t Convergence Reached \n");
              break;
            }
 

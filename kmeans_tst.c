@@ -65,7 +65,7 @@ int main(int nargs, char **args)
 	for(i=0; i<k_clusters; i++){
 		centers[i] = rand() % 255;
 	}
-	printf("\n Randomly Initalized k-clusters");
+	printf("\n 1. Randomly Initalized k-clusters");
 
 	// Convert data to double array
 	double x[size];
@@ -86,7 +86,7 @@ int main(int nargs, char **args)
     }
 	free(centers);
 
-	printf("IMAGE SUCESSFULLY SEGMENTED");
+	printf("IMAGE SUCESSFULLY SEGMENTED \n");
 
 	return 0;
 }
