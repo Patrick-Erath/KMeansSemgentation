@@ -6,9 +6,10 @@ The goal of this project is to segment an image using K-means. In order to run t
 
 
 <h1>Instructions for Running</h1>
+
 1. CD into the project path, and build the project:
 ```console
-cd /KMeansSegmentation
+cd KMeansSegmentation
 gpp main.c
 ```
 
